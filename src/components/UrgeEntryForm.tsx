@@ -1,0 +1,236 @@
+import { useState, FormEvent } from 'react';
+import { UrgeEntry, Location, Emotion, PhysicalSensation, ActionTaken } from '../types';
+import { addEntry, updateEntry } from '../utils/db';
+import { X } from 'lucide-react';
+
+interface Props {
+  onClose: () => void;
+  onSubmit: () => void;
+  existingEntry?: UrgeEntry;
+}
+
+const LOCATIONS: Location[] = ['Home', 'Work', 'School', "Friend's Place", 'Public Space', 'Vehicle', 'Other'];
+const EMOTIONS: Emotion[] = ['Stressed', 'Anxious', 'Bored', 'Sad', 'Angry', 'Lonely', 'Happy', 'Excited', 'Tired', 'Other'];
+const SENSATIONS: PhysicalSensation[] = [
+  'Chest tightness', 'Racing heart', 'Restlessness', 'Tension in shoulders/neck',
+  'Sweating', 'Trembling', 'Stomach discomfort', 'Headache', 'Numbness', 'Other'
+];
+const ACTIONS: ActionTaken[] = ['Processed the urge', 'Gave in to urge', 'Partially gave in'];
+
+export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Props) {
+  const [timestamp, setTimestamp] = useState(
+    existingEntry ? new Date(existingEntry.timestamp).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)
+  );
+  const [location, setLocation] = useState<Location | ''>(existingEntry?.location || '');
+  const [emotions, setEmotions] = useState<Emotion[]>(existingEntry?.emotions || []);
+  const [sensations, setSensations] = useState<PhysicalSensation[]>(existingEntry?.physicalSensations || []);
+  const [actionTaken, setActionTaken] = useState<ActionTaken | ''>(existingEntry?.actionTaken || '');
+  const [notes, setNotes] = useState(existingEntry?.notes || '');
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const handleEmotionToggle = (emotion: Emotion) => {
+    setHasChanges(true);
+    setEmotions(prev =>
+      prev.includes(emotion) ? prev.filter(e => e !== emotion) : [...prev, emotion]
+    );
+  };
+
+  const handleSensationToggle = (sensation: PhysicalSensation) => {
+    setHasChanges(true);
+    setSensations(prev =>
+      prev.includes(sensation) ? prev.filter(s => s !== sensation) : [...prev, sensation]
+    );
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!location || emotions.length === 0 || sensations.length === 0 || !actionTaken) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const entry: UrgeEntry = {
+      id: existingEntry?.id || `${Date.now()}-${Math.random()}`,
+      timestamp: new Date(timestamp).getTime(),
+      location,
+      emotions,
+      physicalSensations: sensations,
+      actionTaken,
+      notes: notes.trim() || undefined,
+    };
+
+    try {
+      if (existingEntry) {
+        await updateEntry(entry);
+      } else {
+        await addEntry(entry);
+      }
+      onSubmit();
+    } catch (error) {
+      console.error('Failed to save entry:', error);
+      alert('Failed to save entry. Please try again.');
+    }
+  };
+
+  const handleClose = () => {
+    if (hasChanges || existingEntry) {
+      if (confirm('Are you sure you want to close without saving?')) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-900">
+            {existingEntry ? 'Edit Entry' : 'Log Urge'}
+          </h2>
+          <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
+            <X size={24} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Date/Time */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Date & Time *
+            </label>
+            <input
+              type="datetime-local"
+              value={timestamp}
+              onChange={(e) => { setTimestamp(e.target.value); setHasChanges(true); }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              required
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Location *
+            </label>
+            <select
+              value={location}
+              onChange={(e) => { setLocation(e.target.value as Location); setHasChanges(true); }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              required
+            >
+              <option value="">Select location...</option>
+              {LOCATIONS.map(loc => (
+                <option key={loc} value={loc}>{loc}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Emotions */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Emotional State * (select all that apply)
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {EMOTIONS.map(emotion => (
+                <button
+                  key={emotion}
+                  type="button"
+                  onClick={() => handleEmotionToggle(emotion)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    emotions.includes(emotion)
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {emotion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Physical Sensations */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Physical Sensations * (select all that apply)
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {SENSATIONS.map(sensation => (
+                <button
+                  key={sensation}
+                  type="button"
+                  onClick={() => handleSensationToggle(sensation)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors text-left ${
+                    sensations.includes(sensation)
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {sensation}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Taken */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Action Taken *
+            </label>
+            <div className="space-y-2">
+              {ACTIONS.map(action => (
+                <label key={action} className="flex items-center">
+                  <input
+                    type="radio"
+                    name="action"
+                    value={action}
+                    checked={actionTaken === action}
+                    onChange={(e) => { setActionTaken(e.target.value as ActionTaken); setHasChanges(true); }}
+                    className="mr-2"
+                    required
+                  />
+                  <span className="text-sm text-gray-700">{action}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Notes (optional)
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => { setNotes(e.target.value); setHasChanges(true); }}
+              maxLength={500}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              placeholder="Any additional context..."
+            />
+            <p className="text-xs text-gray-500 mt-1">{notes.length}/500 characters</p>
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              className="flex-1 bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 font-medium transition-colors"
+            >
+              {existingEntry ? 'Update Entry' : 'Save Entry'}
+            </button>
+            <button
+              type="button"
+              onClick={handleClose}
+              className="px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
