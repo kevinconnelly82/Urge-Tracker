@@ -1,22 +1,23 @@
-import { PhysicalSensation } from '../types';
+import { SensationLocation } from '../types';
 import bodySilhouette from '../assets/body-silhouette.png';
 
 interface Props {
-  sensationMap: Record<PhysicalSensation, number>;
+  sensationMap: Record<SensationLocation, number>;
 }
 
-// Map sensations to body regions (percentages of image dimensions)
-const SENSATION_POSITIONS: Record<PhysicalSensation, { x: string; y: string }> = {
-  'Headache': { x: '50%', y: '8%' },
-  'Tension in shoulders/neck': { x: '50%', y: '22%' },
-  'Chest tightness': { x: '50%', y: '35%' },
-  'Racing heart': { x: '48%', y: '33%' },
-  'Stomach discomfort': { x: '50%', y: '48%' },
-  'Sweating': { x: '50%', y: '40%' },
-  'Trembling': { x: '25%', y: '38%' },
-  'Restlessness': { x: '50%', y: '75%' },
-  'Numbness': { x: '75%', y: '38%' },
-  'Other': { x: '50%', y: '55%' },
+// Map body locations to positions on the silhouette (percentages of image dimensions)
+const LOCATION_POSITIONS: Record<SensationLocation, { x: string; y: string }> = {
+  'Face': { x: '50%', y: '8%' },
+  'Neck': { x: '50%', y: '18%' },
+  'Shoulders': { x: '50%', y: '24%' },
+  'Chest': { x: '50%', y: '35%' },
+  'Heart': { x: '48%', y: '33%' },
+  'Ribs': { x: '50%', y: '40%' },
+  'Stomach': { x: '50%', y: '48%' },
+  'Hips': { x: '50%', y: '55%' },
+  'Arms': { x: '25%', y: '42%' },
+  'Back': { x: '50%', y: '38%' },
+  'Legs': { x: '50%', y: '75%' },
 };
 
 export default function BodyMap({ sensationMap }: Props) {
@@ -24,9 +25,9 @@ export default function BodyMap({ sensationMap }: Props) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Physical Sensation Map</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Body Location Map</h3>
       <p className="text-sm text-gray-600 mb-4">
-        Dots show where you experience physical sensations. Larger dots = more frequent.
+        Dots show where on your body you experience sensations. Larger dots = more frequent.
       </p>
       
       <div className="relative mx-auto bg-gray-50 rounded-lg p-6" style={{ maxWidth: '400px' }}>
@@ -39,8 +40,8 @@ export default function BodyMap({ sensationMap }: Props) {
           />
           
           {/* Sensation dots overlay */}
-          {Object.entries(sensationMap).map(([sensation, count]) => {
-            const pos = SENSATION_POSITIONS[sensation as PhysicalSensation];
+          {Object.entries(sensationMap).map(([location, count]) => {
+            const pos = LOCATION_POSITIONS[location as SensationLocation];
             if (!pos) return null;
             
             const size = 12 + (count / maxCount) * 20; // Scale from 12px to 32px
@@ -48,14 +49,14 @@ export default function BodyMap({ sensationMap }: Props) {
             
             return (
               <div
-                key={sensation}
+                key={location}
                 className="absolute"
                 style={{
                   left: pos.x,
                   top: pos.y,
                   transform: 'translate(-50%, -50%)',
                 }}
-                title={`${sensation}: ${count} times`}
+                title={`${location}: ${count} times`}
               >
                 {/* Glow effect */}
                 <div
@@ -84,14 +85,14 @@ export default function BodyMap({ sensationMap }: Props) {
       
       {/* Legend */}
       <div className="mt-4 text-xs text-gray-600">
-        <p className="font-medium mb-2">Most common sensations:</p>
+        <p className="font-medium mb-2">Most common locations:</p>
         <ul className="space-y-1">
           {Object.entries(sensationMap)
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5)
-            .map(([sensation, count]) => (
-              <li key={sensation} className="flex justify-between">
-                <span>{sensation}</span>
+            .map(([location, count]) => (
+              <li key={location} className="flex justify-between">
+                <span>{location}</span>
                 <span className="font-medium">{count}x</span>
               </li>
             ))}

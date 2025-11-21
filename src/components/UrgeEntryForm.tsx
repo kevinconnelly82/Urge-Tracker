@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { UrgeEntry, Location, Emotion, PhysicalSensation, ActionTaken, UrgeType } from '../types';
+import { UrgeEntry, Location, Emotion, PhysicalSensation, ActionTaken, UrgeType, SensationType, SensationLocation } from '../types';
 import { addEntry, updateEntry } from '../utils/db';
 import { X } from 'lucide-react';
 
@@ -12,9 +12,13 @@ interface Props {
 const URGE_TYPES: UrgeType[] = ['Alcohol', 'Cannabis', 'Food', 'Phone', 'Porn', 'Shopping', 'Tobacco', 'TV', 'Vape'];
 const LOCATIONS: Location[] = ['Home', 'Work', 'School', "Friend's Place", 'Public Space', 'Vehicle', 'Other'];
 const EMOTIONS: Emotion[] = ['Stressed', 'Anxious', 'Bored', 'Sad', 'Angry', 'Lonely', 'Happy', 'Excited', 'Tired', 'Other'];
-const SENSATIONS: PhysicalSensation[] = [
-  'Chest tightness', 'Racing heart', 'Restlessness', 'Tension in shoulders/neck',
-  'Sweating', 'Trembling', 'Stomach discomfort', 'Headache', 'Numbness', 'Other'
+const SENSATION_TYPES: SensationType[] = [
+  'Tightness', 'Restlessness', 'Emptiness', 'Racing/Pounding', 'Tension',
+  'Heaviness', 'Sweating', 'Trembling/Shaking', 'Nausea', 'Aching'
+];
+const SENSATION_LOCATIONS: SensationLocation[] = [
+  'Chest', 'Heart', 'Shoulders', 'Neck', 'Stomach', 'Ribs',
+  'Face', 'Hips', 'Legs', 'Arms', 'Back'
 ];
 const ACTIONS: ActionTaken[] = ['Processed the urge', 'Gave in to urge', 'Partially gave in'];
 
@@ -27,6 +31,8 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
   const [location, setLocation] = useState<Location | ''>(existingEntry?.location || '');
   const [emotions, setEmotions] = useState<Emotion[]>(existingEntry?.emotions || []);
   const [sensations, setSensations] = useState<PhysicalSensation[]>(existingEntry?.physicalSensations || []);
+  const [sensationType, setSensationType] = useState<SensationType | ''>('');
+  const [sensationLocation, setSensationLocation] = useState<SensationLocation | ''>('');
   const [actionTaken, setActionTaken] = useState<ActionTaken | ''>(existingEntry?.actionTaken || '');
   const [notes, setNotes] = useState(existingEntry?.notes || '');
   const [hasChanges, setHasChanges] = useState(false);
@@ -38,11 +44,33 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
     );
   };
 
-  const handleSensationToggle = (sensation: PhysicalSensation) => {
+  const handleAddSensation = () => {
+    if (!sensationType || !sensationLocation) {
+      alert('Please select both a sensation type and location');
+      return;
+    }
+    
+    const newSensation: PhysicalSensation = {
+      type: sensationType,
+      location: sensationLocation
+    };
+    
+    // Check if this combination already exists
+    const exists = sensations.some(s => s.type === sensationType && s.location === sensationLocation);
+    if (exists) {
+      alert('This sensation combination is already added');
+      return;
+    }
+    
     setHasChanges(true);
-    setSensations(prev =>
-      prev.includes(sensation) ? prev.filter(s => s !== sensation) : [...prev, sensation]
-    );
+    setSensations(prev => [...prev, newSensation]);
+    setSensationType('');
+    setSensationLocation('');
+  };
+
+  const handleRemoveSensation = (index: number) => {
+    setHasChanges(true);
+    setSensations(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -197,23 +225,71 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
           {/* Physical Sensations */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Physical Sensations * (select all that apply)
+              Physical Sensations *
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {SENSATIONS.map(sensation => (
-                <button
-                  key={sensation}
-                  type="button"
-                  onClick={() => handleSensationToggle(sensation)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors text-left ${
-                    sensations.includes(sensation)
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {sensation}
-                </button>
-              ))}
+            
+            <div className="space-y-3">
+              {/* Add new sensation */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Type of Sensation</label>
+                  <select
+                    value={sensationType}
+                    onChange={(e) => setSensationType(e.target.value as SensationType)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">Select type...</option>
+                    {SENSATION_TYPES.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Location</label>
+                  <select
+                    value={sensationLocation}
+                    onChange={(e) => setSensationLocation(e.target.value as SensationLocation)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">Select location...</option>
+                    {SENSATION_LOCATIONS.map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                onClick={handleAddSensation}
+                className="w-full px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-sm font-medium transition-colors"
+              >
+                + Add Sensation
+              </button>
+              
+              {/* Display added sensations */}
+              {sensations.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-600">Added sensations:</p>
+                  <div className="space-y-1">
+                    {sensations.map((sensation, index) => (
+                      <div key={index} className="flex items-center justify-between bg-indigo-50 px-3 py-2 rounded-md">
+                        <span className="text-sm text-indigo-900">
+                          {sensation.type} in {sensation.location}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSensation(index)}
+                          className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

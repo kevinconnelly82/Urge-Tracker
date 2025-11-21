@@ -125,9 +125,33 @@ export default function Dashboard({ analytics }: Props) {
             </div>
           </div>
 
+          {/* Sensation Type Breakdown */}
+          {Object.keys(analytics.sensationTypeBreakdown).length > 0 && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Activity className="text-indigo-600" size={20} />
+                <h3 className="text-lg font-semibold text-gray-900">Physical Sensation Types</h3>
+              </div>
+              <div className="max-w-sm mx-auto">
+                <Pie 
+                  data={{
+                    labels: Object.keys(analytics.sensationTypeBreakdown),
+                    datasets: [{
+                      data: Object.values(analytics.sensationTypeBreakdown),
+                      backgroundColor: [
+                        '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6b7280', '#f97316', '#14b8a6', '#ef4444'
+                      ],
+                    }]
+                  }} 
+                  options={pieOptions} 
+                />
+              </div>
+            </div>
+          )}
+
           {/* Body Map */}
-          {Object.keys(analytics.physicalSensationMap).length > 0 && (
-            <BodyMap sensationMap={analytics.physicalSensationMap} />
+          {Object.keys(analytics.sensationLocationMap).length > 0 && (
+            <BodyMap sensationMap={analytics.sensationLocationMap} />
           )}
 
           {/* Location Breakdown */}

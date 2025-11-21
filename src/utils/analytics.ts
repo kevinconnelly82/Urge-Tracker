@@ -1,4 +1,4 @@
-import { UrgeEntry, AnalyticsData, Location, Emotion, UrgeType, PhysicalSensation } from '../types';
+import { UrgeEntry, AnalyticsData, Location, Emotion, UrgeType, SensationType, SensationLocation } from '../types';
 import { differenceInDays, startOfDay } from 'date-fns';
 
 export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
@@ -13,7 +13,8 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
       emotionBreakdown: {} as Record<Emotion, number>,
       timePatterns: {},
       mostCommonTrigger: 'Not enough data',
-      physicalSensationMap: {} as Record<PhysicalSensation, number>,
+      sensationTypeBreakdown: {} as Record<SensationType, number>,
+      sensationLocationMap: {} as Record<SensationLocation, number>,
     };
   }
 
@@ -51,13 +52,21 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
     return acc;
   }, {} as Record<Emotion, number>);
 
-  // Physical sensation map
-  const physicalSensationMap = entries.reduce((acc, entry) => {
+  // Sensation type breakdown
+  const sensationTypeBreakdown = entries.reduce((acc, entry) => {
     entry.physicalSensations.forEach(sensation => {
-      acc[sensation] = (acc[sensation] || 0) + 1;
+      acc[sensation.type] = (acc[sensation.type] || 0) + 1;
     });
     return acc;
-  }, {} as Record<PhysicalSensation, number>);
+  }, {} as Record<SensationType, number>);
+
+  // Sensation location map
+  const sensationLocationMap = entries.reduce((acc, entry) => {
+    entry.physicalSensations.forEach(sensation => {
+      acc[sensation.location] = (acc[sensation.location] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<SensationLocation, number>);
 
   // Time patterns (by hour)
   const timePatterns = entries.reduce((acc, entry) => {
@@ -79,7 +88,8 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
     emotionBreakdown,
     timePatterns,
     mostCommonTrigger,
-    physicalSensationMap,
+    sensationTypeBreakdown,
+    sensationLocationMap,
   };
 }
 

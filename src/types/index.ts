@@ -4,17 +4,35 @@ export type Location = 'Home' | 'Work' | 'School' | "Friend's Place" | 'Public S
 
 export type Emotion = 'Stressed' | 'Anxious' | 'Bored' | 'Sad' | 'Angry' | 'Lonely' | 'Happy' | 'Excited' | 'Tired' | 'Other';
 
-export type PhysicalSensation = 
-  | 'Chest tightness'
-  | 'Racing heart'
+export type SensationType = 
+  | 'Tightness'
   | 'Restlessness'
-  | 'Tension in shoulders/neck'
+  | 'Emptiness'
+  | 'Racing/Pounding'
+  | 'Tension'
+  | 'Heaviness'
   | 'Sweating'
-  | 'Trembling'
-  | 'Stomach discomfort'
-  | 'Headache'
-  | 'Numbness'
-  | 'Other';
+  | 'Trembling/Shaking'
+  | 'Nausea'
+  | 'Aching';
+
+export type SensationLocation = 
+  | 'Chest'
+  | 'Heart'
+  | 'Shoulders'
+  | 'Neck'
+  | 'Stomach'
+  | 'Ribs'
+  | 'Face'
+  | 'Hips'
+  | 'Legs'
+  | 'Arms'
+  | 'Back';
+
+export interface PhysicalSensation {
+  type: SensationType;
+  location: SensationLocation;
+}
 
 export type ActionTaken = 'Processed the urge' | 'Gave in to urge' | 'Partially gave in';
 
@@ -40,5 +58,6 @@ export interface AnalyticsData {
   emotionBreakdown: Record<Emotion, number>;
   timePatterns: Record<number, number>;
   mostCommonTrigger: string;
-  physicalSensationMap: Record<PhysicalSensation, number>;
+  sensationTypeBreakdown: Record<SensationType, number>;
+  sensationLocationMap: Record<SensationLocation, number>;
 }
