@@ -1,21 +1,22 @@
 import { PhysicalSensation } from '../types';
+import bodySilhouette from '../assets/body-silhouette.png';
 
 interface Props {
   sensationMap: Record<PhysicalSensation, number>;
 }
 
-// Map sensations to body regions
-const SENSATION_POSITIONS: Record<PhysicalSensation, { x: number; y: number }> = {
-  'Headache': { x: 50, y: 15 },
-  'Tension in shoulders/neck': { x: 50, y: 38 },
-  'Chest tightness': { x: 50, y: 55 },
-  'Racing heart': { x: 48, y: 52 },
-  'Stomach discomfort': { x: 50, y: 80 },
-  'Sweating': { x: 50, y: 65 },
-  'Trembling': { x: 22, y: 60 },
-  'Restlessness': { x: 50, y: 140 },
-  'Numbness': { x: 78, y: 60 },
-  'Other': { x: 50, y: 100 },
+// Map sensations to body regions (percentages of image dimensions)
+const SENSATION_POSITIONS: Record<PhysicalSensation, { x: string; y: string }> = {
+  'Headache': { x: '50%', y: '8%' },
+  'Tension in shoulders/neck': { x: '50%', y: '22%' },
+  'Chest tightness': { x: '50%', y: '35%' },
+  'Racing heart': { x: '48%', y: '33%' },
+  'Stomach discomfort': { x: '50%', y: '48%' },
+  'Sweating': { x: '50%', y: '40%' },
+  'Trembling': { x: '25%', y: '38%' },
+  'Restlessness': { x: '50%', y: '75%' },
+  'Numbness': { x: '75%', y: '38%' },
+  'Other': { x: '50%', y: '55%' },
 };
 
 export default function BodyMap({ sensationMap }: Props) {
@@ -28,69 +29,57 @@ export default function BodyMap({ sensationMap }: Props) {
         Dots show where you experience physical sensations. Larger dots = more frequent.
       </p>
       
-      <div className="relative mx-auto bg-gray-50 rounded-lg p-6" style={{ maxWidth: '300px' }}>
-        {/* Simple but clear body diagram */}
-        <svg viewBox="0 0 100 200" className="w-full h-auto">
-          {/* Head */}
-          <circle cx="50" cy="15" r="12" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
+      <div className="relative mx-auto bg-gray-50 rounded-lg p-6" style={{ maxWidth: '400px' }}>
+        {/* Custom body silhouette with sensation dots */}
+        <div className="relative">
+          <img 
+            src={bodySilhouette} 
+            alt="Body silhouette" 
+            className="w-full h-auto"
+          />
           
-          {/* Neck */}
-          <rect x="46" y="27" width="8" height="8" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="2" />
-          
-          {/* Shoulders */}
-          <ellipse cx="50" cy="42" rx="22" ry="8" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
-          
-          {/* Upper torso */}
-          <rect x="32" y="38" width="36" height="30" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
-          
-          {/* Lower torso */}
-          <path d="M 32 68 L 30 95 L 70 95 L 68 68 Z" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
-          
-          {/* Left arm */}
-          <rect x="18" y="42" width="8" height="35" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
-          
-          {/* Right arm */}
-          <rect x="74" y="42" width="8" height="35" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
-          
-          {/* Left leg */}
-          <rect x="35" y="95" width="10" height="85" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="5" />
-          
-          {/* Right leg */}
-          <rect x="55" y="95" width="10" height="85" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="5" />
-          
-          {/* Sensation dots with labels */}
+          {/* Sensation dots overlay */}
           {Object.entries(sensationMap).map(([sensation, count]) => {
             const pos = SENSATION_POSITIONS[sensation as PhysicalSensation];
             if (!pos) return null;
             
-            const size = 3 + (count / maxCount) * 5; // Scale from 3 to 8
-            const opacity = 0.8 + (count / maxCount) * 0.2; // Scale from 0.8 to 1
+            const size = 12 + (count / maxCount) * 20; // Scale from 12px to 32px
+            const opacity = 0.7 + (count / maxCount) * 0.3; // Scale from 0.7 to 1
             
             return (
-              <g key={sensation}>
+              <div
+                key={sensation}
+                className="absolute"
+                style={{
+                  left: pos.x,
+                  top: pos.y,
+                  transform: 'translate(-50%, -50%)',
+                }}
+                title={`${sensation}: ${count} times`}
+              >
                 {/* Glow effect */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r={size + 2}
-                  fill="#ef4444"
-                  opacity={0.3}
+                <div
+                  className="absolute inset-0 rounded-full bg-red-500"
+                  style={{
+                    width: `${size + 8}px`,
+                    height: `${size + 8}px`,
+                    opacity: 0.3,
+                    transform: 'translate(-4px, -4px)',
+                  }}
                 />
                 {/* Main dot */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r={size}
-                  fill="#ef4444"
-                  opacity={opacity}
-                  stroke="#dc2626"
-                  strokeWidth="1"
+                <div
+                  className="rounded-full bg-red-500 border-2 border-red-700"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    opacity: opacity,
+                  }}
                 />
-                <title>{sensation}: {count} times</title>
-              </g>
+              </div>
             );
           })}
-        </svg>
+        </div>
       </div>
       
       {/* Legend */}
