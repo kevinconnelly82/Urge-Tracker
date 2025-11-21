@@ -37,22 +37,6 @@ export default function Dashboard({ analytics }: Props) {
     );
   }
 
-  if (analytics.totalEntries < 5) {
-    return (
-      <div className="space-y-6">
-        <QuickStats analytics={analytics} />
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-          <p className="text-yellow-800 font-medium">
-            Keep logging! You need at least 5 entries to see detailed patterns.
-          </p>
-          <p className="text-yellow-700 text-sm mt-1">
-            {5 - analytics.totalEntries} more to go
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   const pieOptions = {
     maintainAspectRatio: true,
     plugins: {
@@ -141,8 +125,8 @@ export default function Dashboard({ analytics }: Props) {
             </div>
           </div>
 
-          {/* Body Map - Only show if 5+ entries */}
-          {analytics.totalEntries >= 5 && Object.keys(analytics.physicalSensationMap).length > 0 && (
+          {/* Body Map */}
+          {Object.keys(analytics.physicalSensationMap).length > 0 && (
             <BodyMap sensationMap={analytics.physicalSensationMap} />
           )}
 
