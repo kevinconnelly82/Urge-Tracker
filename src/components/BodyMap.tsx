@@ -4,18 +4,18 @@ interface Props {
   sensationMap: Record<PhysicalSensation, number>;
 }
 
-// Map sensations to body regions (adjusted for new silhouette)
+// Map sensations to body regions
 const SENSATION_POSITIONS: Record<PhysicalSensation, { x: number; y: number }> = {
-  'Headache': { x: 50, y: 10 },
-  'Tension in shoulders/neck': { x: 50, y: 28 },
-  'Chest tightness': { x: 50, y: 42 },
-  'Racing heart': { x: 48, y: 40 },
-  'Stomach discomfort': { x: 50, y: 58 },
-  'Sweating': { x: 50, y: 48 },
-  'Trembling': { x: 28, y: 48 },
-  'Restlessness': { x: 50, y: 85 },
-  'Numbness': { x: 72, y: 48 },
-  'Other': { x: 50, y: 68 },
+  'Headache': { x: 50, y: 15 },
+  'Tension in shoulders/neck': { x: 50, y: 38 },
+  'Chest tightness': { x: 50, y: 55 },
+  'Racing heart': { x: 48, y: 52 },
+  'Stomach discomfort': { x: 50, y: 80 },
+  'Sweating': { x: 50, y: 65 },
+  'Trembling': { x: 22, y: 60 },
+  'Restlessness': { x: 50, y: 140 },
+  'Numbness': { x: 78, y: 60 },
+  'Other': { x: 50, y: 100 },
 };
 
 export default function BodyMap({ sensationMap }: Props) {
@@ -28,46 +28,55 @@ export default function BodyMap({ sensationMap }: Props) {
         Dots show where you experience physical sensations. Larger dots = more frequent.
       </p>
       
-      <div className="relative mx-auto" style={{ maxWidth: '300px' }}>
-        {/* Human silhouette SVG */}
-        <svg viewBox="0 0 100 120" className="w-full h-auto">
+      <div className="relative mx-auto bg-gray-50 rounded-lg p-6" style={{ maxWidth: '300px' }}>
+        {/* Simple but clear body diagram */}
+        <svg viewBox="0 0 100 200" className="w-full h-auto">
           {/* Head */}
-          <ellipse cx="50" cy="10" rx="9" ry="11" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          <circle cx="50" cy="15" r="12" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
           
           {/* Neck */}
-          <path d="M 45 20 L 45 25 L 55 25 L 55 20" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          <rect x="46" y="27" width="8" height="8" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="2" />
           
-          {/* Shoulders and upper torso */}
-          <ellipse cx="50" cy="35" rx="18" ry="12" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          {/* Shoulders */}
+          <ellipse cx="50" cy="42" rx="22" ry="8" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
           
-          {/* Chest/torso */}
-          <path d="M 35 30 Q 32 45 35 60 L 65 60 Q 68 45 65 30" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          {/* Upper torso */}
+          <rect x="32" y="38" width="36" height="30" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
           
-          {/* Waist/hips */}
-          <path d="M 35 60 Q 33 70 36 75 L 64 75 Q 67 70 65 60" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          {/* Lower torso */}
+          <path d="M 32 68 L 30 95 L 70 95 L 68 68 Z" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
           
           {/* Left arm */}
-          <path d="M 35 32 Q 28 35 25 45 Q 23 52 25 58" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" />
+          <rect x="18" y="42" width="8" height="35" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
           
           {/* Right arm */}
-          <path d="M 65 32 Q 72 35 75 45 Q 77 52 75 58" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" />
+          <rect x="74" y="42" width="8" height="35" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="4" />
           
           {/* Left leg */}
-          <path d="M 40 75 L 38 95 L 38 110 Q 38 112 40 112 Q 42 112 42 110 L 42 95 L 44 75" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          <rect x="35" y="95" width="10" height="85" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="5" />
           
           {/* Right leg */}
-          <path d="M 56 75 L 58 95 L 58 110 Q 58 112 60 112 Q 62 112 62 110 L 62 95 L 60 75" fill="#f3f4f6" stroke="#9ca3af" strokeWidth="1.5" />
+          <rect x="55" y="95" width="10" height="85" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" rx="5" />
           
-          {/* Sensation dots */}
+          {/* Sensation dots with labels */}
           {Object.entries(sensationMap).map(([sensation, count]) => {
             const pos = SENSATION_POSITIONS[sensation as PhysicalSensation];
             if (!pos) return null;
             
-            const size = 2.5 + (count / maxCount) * 4; // Scale from 2.5 to 6.5
-            const opacity = 0.7 + (count / maxCount) * 0.3; // Scale from 0.7 to 1
+            const size = 3 + (count / maxCount) * 5; // Scale from 3 to 8
+            const opacity = 0.8 + (count / maxCount) * 0.2; // Scale from 0.8 to 1
             
             return (
               <g key={sensation}>
+                {/* Glow effect */}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={size + 2}
+                  fill="#ef4444"
+                  opacity={0.3}
+                />
+                {/* Main dot */}
                 <circle
                   cx={pos.x}
                   cy={pos.y}
@@ -75,7 +84,7 @@ export default function BodyMap({ sensationMap }: Props) {
                   fill="#ef4444"
                   opacity={opacity}
                   stroke="#dc2626"
-                  strokeWidth="0.5"
+                  strokeWidth="1"
                 />
                 <title>{sensation}: {count} times</title>
               </g>
