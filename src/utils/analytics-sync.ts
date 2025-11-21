@@ -33,13 +33,17 @@ export async function syncEntryToCloud(entry: UrgeEntry): Promise<void> {
       day_of_week: date.getDay(),
     };
 
-    const { error } = await supabase
+    console.log('Syncing to Supabase:', anonymousEntry);
+
+    const { data, error } = await supabase
       .from('urge_entries')
       .insert([anonymousEntry]);
 
     if (error) {
       console.error('Failed to sync to cloud:', error);
       // Don't throw - we don't want to block the user if cloud sync fails
+    } else {
+      console.log('Successfully synced to cloud:', data);
     }
   } catch (error) {
     console.error('Error syncing to cloud:', error);
