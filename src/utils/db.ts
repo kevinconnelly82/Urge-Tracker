@@ -1,5 +1,6 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { UrgeEntry } from '../types';
+import { syncEntryToCloud } from './analytics-sync';
 
 interface UrgeTrackerDB extends DBSchema {
   entries: {
@@ -27,6 +28,11 @@ export async function getDB() {
 export async function addEntry(entry: UrgeEntry): Promise<void> {
   const db = await getDB();
   await db.add('entries', entry);
+  
+  // Sync anonymized data to cloud (non-blocking)
+  syncEntryToCloud(entry).catch(err => 
+    console.warn('Cloud sync failed, but entry saved locally:', err)
+  );
 }
 
 export async function updateEntry(entry: UrgeEntry): Promise<void> {
