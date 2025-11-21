@@ -98,7 +98,7 @@ export default function App() {
               }`}
             >
               <BarChart3 size={24} />
-              <span className="text-xs mt-1">Dashboard</span>
+              <span className="text-xs mt-1">Stats</span>
             </button>
             <button
               onClick={() => setActiveTab('history')}
