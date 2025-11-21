@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Pie, Bar } from 'react-chartjs-2';
 import { AnalyticsData } from '../types';
 import { TrendingUp, MapPin, Heart, Target, Activity } from 'lucide-react';
 import BodyMap from './BodyMap';
 
-ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 interface Props {
   analytics: AnalyticsData;
@@ -51,6 +52,38 @@ export default function Dashboard({ analytics }: Props) {
       </div>
     );
   }
+
+  const pieOptions = {
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        position: 'bottom' as const,
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context: any) {
+            const label = context.label || '';
+            const value = context.parsed || 0;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      },
+      datalabels: {
+        color: '#fff',
+        font: {
+          weight: 'bold' as const,
+          size: 14,
+        },
+        formatter: (value: number, context: any) => {
+          const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(0);
+          return percentage + '%';
+        }
+      }
+    }
+  };
 
   const urgeTypeData = {
     labels: Object.keys(analytics.urgeTypeBreakdown),
@@ -104,7 +137,7 @@ export default function Dashboard({ analytics }: Props) {
               <h3 className="text-lg font-semibold text-gray-900">Urge Types</h3>
             </div>
             <div className="max-w-sm mx-auto">
-              <Pie data={urgeTypeData} options={{ maintainAspectRatio: true }} />
+              <Pie data={urgeTypeData} options={pieOptions} />
             </div>
           </div>
 
@@ -120,7 +153,7 @@ export default function Dashboard({ analytics }: Props) {
               <h3 className="text-lg font-semibold text-gray-900">Location Patterns</h3>
             </div>
             <div className="max-w-sm mx-auto">
-              <Pie data={locationData} options={{ maintainAspectRatio: true }} />
+              <Pie data={locationData} options={pieOptions} />
             </div>
           </div>
 
@@ -131,7 +164,7 @@ export default function Dashboard({ analytics }: Props) {
               <h3 className="text-lg font-semibold text-gray-900">Top Emotions</h3>
             </div>
             <div className="max-w-sm mx-auto">
-              <Pie data={emotionData} options={{ maintainAspectRatio: true }} />
+              <Pie data={emotionData} options={pieOptions} />
             </div>
           </div>
 
