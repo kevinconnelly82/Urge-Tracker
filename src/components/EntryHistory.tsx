@@ -164,6 +164,18 @@ export default function EntryHistory({ entries, onEdit, onUpdate }: Props) {
 
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
+                <span className="font-medium text-gray-700">Type:</span>
+                <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs font-medium">
+                  {entry.urgeType}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm">
+                <span className="font-medium text-gray-700">Intensity:</span>
+                <span className="text-gray-600">{entry.intensity}/10</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm">
                 <span className="font-medium text-gray-700">Location:</span>
                 <span className="text-gray-600">{entry.location}</span>
               </div>

@@ -1,4 +1,4 @@
-import { UrgeEntry, AnalyticsData, Location, Emotion } from '../types';
+import { UrgeEntry, AnalyticsData, Location, Emotion, UrgeType, PhysicalSensation } from '../types';
 import { differenceInDays, startOfDay } from 'date-fns';
 
 export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
@@ -7,10 +7,13 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
       totalEntries: 0,
       currentStreak: 0,
       successRate: 0,
+      urgeTypeBreakdown: {} as Record<UrgeType, number>,
+      averageIntensity: 0,
       locationBreakdown: {} as Record<Location, number>,
       emotionBreakdown: {} as Record<Emotion, number>,
       timePatterns: {},
       mostCommonTrigger: 'Not enough data',
+      physicalSensationMap: {} as Record<PhysicalSensation, number>,
     };
   }
 
@@ -23,6 +26,16 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
   // Calculate success rate
   const processedCount = entries.filter(e => e.actionTaken === 'Processed the urge').length;
   const successRate = (processedCount / entries.length) * 100;
+
+  // Urge type breakdown
+  const urgeTypeBreakdown = entries.reduce((acc, entry) => {
+    acc[entry.urgeType] = (acc[entry.urgeType] || 0) + 1;
+    return acc;
+  }, {} as Record<UrgeType, number>);
+
+  // Average intensity
+  const totalIntensity = entries.reduce((sum, entry) => sum + entry.intensity, 0);
+  const averageIntensity = totalIntensity / entries.length;
 
   // Location breakdown
   const locationBreakdown = entries.reduce((acc, entry) => {
@@ -38,6 +51,14 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
     return acc;
   }, {} as Record<Emotion, number>);
 
+  // Physical sensation map
+  const physicalSensationMap = entries.reduce((acc, entry) => {
+    entry.physicalSensations.forEach(sensation => {
+      acc[sensation] = (acc[sensation] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<PhysicalSensation, number>);
+
   // Time patterns (by hour)
   const timePatterns = entries.reduce((acc, entry) => {
     const hour = new Date(entry.timestamp).getHours();
@@ -52,10 +73,13 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
     totalEntries: entries.length,
     currentStreak,
     successRate: Math.round(successRate),
+    urgeTypeBreakdown,
+    averageIntensity: Math.round(averageIntensity * 10) / 10,
     locationBreakdown,
     emotionBreakdown,
     timePatterns,
     mostCommonTrigger,
+    physicalSensationMap,
   };
 }
 

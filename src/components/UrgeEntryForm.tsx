@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { UrgeEntry, Location, Emotion, PhysicalSensation, ActionTaken } from '../types';
+import { UrgeEntry, Location, Emotion, PhysicalSensation, ActionTaken, UrgeType } from '../types';
 import { addEntry, updateEntry } from '../utils/db';
 import { X } from 'lucide-react';
 
@@ -9,6 +9,7 @@ interface Props {
   existingEntry?: UrgeEntry;
 }
 
+const URGE_TYPES: UrgeType[] = ['Alcohol', 'Cannabis', 'Food', 'Phone', 'Porn', 'Shopping', 'Tobacco', 'TV', 'Vape'];
 const LOCATIONS: Location[] = ['Home', 'Work', 'School', "Friend's Place", 'Public Space', 'Vehicle', 'Other'];
 const EMOTIONS: Emotion[] = ['Stressed', 'Anxious', 'Bored', 'Sad', 'Angry', 'Lonely', 'Happy', 'Excited', 'Tired', 'Other'];
 const SENSATIONS: PhysicalSensation[] = [
@@ -21,6 +22,8 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
   const [timestamp, setTimestamp] = useState(
     existingEntry ? new Date(existingEntry.timestamp).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)
   );
+  const [urgeType, setUrgeType] = useState<UrgeType | ''>(existingEntry?.urgeType || '');
+  const [intensity, setIntensity] = useState<number>(existingEntry?.intensity || 5);
   const [location, setLocation] = useState<Location | ''>(existingEntry?.location || '');
   const [emotions, setEmotions] = useState<Emotion[]>(existingEntry?.emotions || []);
   const [sensations, setSensations] = useState<PhysicalSensation[]>(existingEntry?.physicalSensations || []);
@@ -45,7 +48,7 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!location || emotions.length === 0 || sensations.length === 0 || !actionTaken) {
+    if (!urgeType || !location || emotions.length === 0 || sensations.length === 0 || !actionTaken) {
       alert('Please fill in all required fields');
       return;
     }
@@ -53,6 +56,8 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
     const entry: UrgeEntry = {
       id: existingEntry?.id || `${Date.now()}-${Math.random()}`,
       timestamp: new Date(timestamp).getTime(),
+      urgeType,
+      intensity,
       location,
       emotions,
       physicalSensations: sensations,
@@ -108,6 +113,44 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               required
             />
+          </div>
+
+          {/* Type of Urge */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Type of Urge *
+            </label>
+            <select
+              value={urgeType}
+              onChange={(e) => { setUrgeType(e.target.value as UrgeType); setHasChanges(true); }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              required
+            >
+              <option value="">Select urge type...</option>
+              {URGE_TYPES.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Intensity */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Intensity * ({intensity}/10)
+            </label>
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={intensity}
+              onChange={(e) => { setIntensity(Number(e.target.value)); setHasChanges(true); }}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>1 (Mild)</span>
+              <span>5 (Moderate)</span>
+              <span>10 (Intense)</span>
+            </div>
           </div>
 
           {/* Location */}

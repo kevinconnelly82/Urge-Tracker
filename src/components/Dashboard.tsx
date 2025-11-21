@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 import { AnalyticsData } from '../types';
-import { TrendingUp, MapPin, Heart, Target } from 'lucide-react';
+import { TrendingUp, MapPin, Heart, Target, Activity } from 'lucide-react';
+import BodyMap from './BodyMap';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -51,6 +52,16 @@ export default function Dashboard({ analytics }: Props) {
     );
   }
 
+  const urgeTypeData = {
+    labels: Object.keys(analytics.urgeTypeBreakdown),
+    datasets: [{
+      data: Object.values(analytics.urgeTypeBreakdown),
+      backgroundColor: [
+        '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6b7280', '#f97316', '#14b8a6'
+      ],
+    }]
+  };
+
   const locationData = {
     labels: Object.keys(analytics.locationBreakdown),
     datasets: [{
@@ -86,6 +97,22 @@ export default function Dashboard({ analytics }: Props) {
 
       {showCharts && (
         <>
+          {/* Urge Type Breakdown */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Activity className="text-indigo-600" size={20} />
+              <h3 className="text-lg font-semibold text-gray-900">Urge Types</h3>
+            </div>
+            <div className="max-w-sm mx-auto">
+              <Pie data={urgeTypeData} options={{ maintainAspectRatio: true }} />
+            </div>
+          </div>
+
+          {/* Body Map - Only show if 5+ entries */}
+          {analytics.totalEntries >= 5 && Object.keys(analytics.physicalSensationMap).length > 0 && (
+            <BodyMap sensationMap={analytics.physicalSensationMap} />
+          )}
+
           {/* Location Breakdown */}
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center gap-2 mb-4">
@@ -141,10 +168,14 @@ export default function Dashboard({ analytics }: Props) {
 
 function QuickStats({ analytics }: { analytics: AnalyticsData }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div className="bg-white rounded-lg shadow p-6">
         <p className="text-sm text-gray-600 mb-1">Total Entries</p>
         <p className="text-3xl font-bold text-gray-900">{analytics.totalEntries}</p>
+      </div>
+      <div className="bg-white rounded-lg shadow p-6">
+        <p className="text-sm text-gray-600 mb-1">Avg Intensity</p>
+        <p className="text-3xl font-bold text-orange-600">{analytics.averageIntensity}/10</p>
       </div>
       <div className="bg-white rounded-lg shadow p-6">
         <p className="text-sm text-gray-600 mb-1">Current Streak</p>
