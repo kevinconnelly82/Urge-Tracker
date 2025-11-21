@@ -243,46 +243,54 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Physical Sensations *
             </label>
+            <p className="text-xs text-gray-600 mb-3">
+              Add one or more sensations by selecting the type and location, then clicking "Add"
+            </p>
             
             <div className="space-y-3">
               {/* Add new sensation */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs text-gray-600 mb-1">Type of Sensation</label>
-                  <select
-                    value={sensationType}
-                    onChange={(e) => setSensationType(e.target.value as SensationType)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
-                  >
-                    <option value="">Select type...</option>
-                    {SENSATION_TYPES.map(type => (
-                      <option key={type} value={type}>{type}</option>
-                    ))}
-                  </select>
+              <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Type of Sensation</label>
+                    <select
+                      value={sensationType}
+                      onChange={(e) => setSensationType(e.target.value as SensationType)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                    >
+                      <option value="">Select type...</option>
+                      {SENSATION_TYPES.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Where on Body</label>
+                    <select
+                      value={sensationLocation}
+                      onChange={(e) => setSensationLocation(e.target.value as SensationLocation)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                    >
+                      <option value="">Select location...</option>
+                      {SENSATION_LOCATIONS.map(loc => (
+                        <option key={loc} value={loc}>{loc}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 
-                <div>
-                  <label className="block text-xs text-gray-600 mb-1">Location</label>
-                  <select
-                    value={sensationLocation}
-                    onChange={(e) => setSensationLocation(e.target.value as SensationLocation)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
-                  >
-                    <option value="">Select location...</option>
-                    {SENSATION_LOCATIONS.map(loc => (
-                      <option key={loc} value={loc}>{loc}</option>
-                    ))}
-                  </select>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleAddSensation}
+                  disabled={!sensationType || !sensationLocation}
+                  className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  {sensationType && sensationLocation 
+                    ? `+ Add "${sensationType} in ${sensationLocation}"` 
+                    : '+ Add Sensation (select both fields first)'}
+                </button>
               </div>
-              
-              <button
-                type="button"
-                onClick={handleAddSensation}
-                className="w-full px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium transition-colors"
-              >
-                + Add Sensation
-              </button>
               
               {/* Display added sensations */}
               {sensations.length > 0 ? (
