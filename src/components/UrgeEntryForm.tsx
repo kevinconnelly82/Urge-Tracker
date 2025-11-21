@@ -76,8 +76,24 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!urgeType || !location || emotions.length === 0 || sensations.length === 0 || !actionTaken) {
-      alert('Please fill in all required fields');
+    if (!urgeType) {
+      alert('Please select a type of urge');
+      return;
+    }
+    if (!location) {
+      alert('Please select a location');
+      return;
+    }
+    if (emotions.length === 0) {
+      alert('Please select at least one emotion');
+      return;
+    }
+    if (sensations.length === 0) {
+      alert('Please add at least one physical sensation (select type and location, then click "+ Add Sensation")');
+      return;
+    }
+    if (!actionTaken) {
+      alert('Please select an action taken');
       return;
     }
 
@@ -263,15 +279,15 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
               <button
                 type="button"
                 onClick={handleAddSensation}
-                className="w-full px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-sm font-medium transition-colors"
+                className="w-full px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium transition-colors"
               >
                 + Add Sensation
               </button>
               
               {/* Display added sensations */}
-              {sensations.length > 0 && (
+              {sensations.length > 0 ? (
                 <div className="space-y-2">
-                  <p className="text-xs text-gray-600">Added sensations:</p>
+                  <p className="text-xs text-gray-600">Added sensations ({sensations.length}):</p>
                   <div className="space-y-1">
                     {sensations.map((sensation, index) => (
                       <div key={index} className="flex items-center justify-between bg-indigo-50 px-3 py-2 rounded-md">
@@ -289,6 +305,10 @@ export default function UrgeEntryForm({ onClose, onSubmit, existingEntry }: Prop
                     ))}
                   </div>
                 </div>
+              ) : (
+                <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded">
+                  ⚠️ You must add at least one sensation before submitting
+                </p>
               )}
             </div>
           </div>
