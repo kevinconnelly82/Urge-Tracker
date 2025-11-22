@@ -3,11 +3,12 @@ import { Plus, BarChart3, History, Info } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import EntryHistory from './components/EntryHistory';
 import UrgeEntryForm from './components/UrgeEntryForm';
+import TermsOfService from './components/TermsOfService';
 import { UrgeEntry } from './types';
 import { getAllEntries } from './utils/db';
 import { calculateAnalytics } from './utils/analytics';
 
-type Tab = 'dashboard' | 'history' | 'about';
+type Tab = 'dashboard' | 'history' | 'about' | 'terms';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
@@ -75,7 +76,8 @@ export default function App() {
             onUpdate={loadEntries}
           />
         )}
-        {activeTab === 'about' && <AboutPage />}
+        {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
+        {activeTab === 'terms' && <TermsOfService />}
       </main>
 
       {/* Floating Action Button */}
@@ -137,7 +139,7 @@ export default function App() {
   );
 }
 
-function AboutPage() {
+function AboutPage({ onNavigateToTerms }: { onNavigateToTerms?: () => void }) {
   return (
     <div className="bg-white rounded-lg shadow p-6 space-y-4">
       <h2 className="text-2xl font-bold text-gray-900">About Urge Tracker</h2>
@@ -178,9 +180,17 @@ function AboutPage() {
         </div>
 
         <div className="pt-4 border-t">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 mb-2">
             Version 1.0.0 • Built with privacy in mind
           </p>
+          {onNavigateToTerms && (
+            <button
+              onClick={onNavigateToTerms}
+              className="text-sm text-indigo-600 hover:text-indigo-800 underline"
+            >
+              View Terms of Service
+            </button>
+          )}
         </div>
       </div>
     </div>
