@@ -13,13 +13,17 @@ interface AnonymousUrgeEntry {
   timestamp: string;
   hour_of_day: number;
   day_of_week: number;
+  user_id?: string;
 }
 
 export async function syncEntryToCloud(entry: UrgeEntry): Promise<void> {
   try {
     const date = new Date(entry.timestamp);
     
-    // Create anonymized version - NO user ID, NO notes, NO identifying info
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Create anonymized version - includes user_id for authenticated users
     const anonymousEntry: AnonymousUrgeEntry = {
       urge_type: entry.urgeType,
       intensity: entry.intensity,
@@ -31,6 +35,7 @@ export async function syncEntryToCloud(entry: UrgeEntry): Promise<void> {
       timestamp: date.toISOString(),
       hour_of_day: date.getHours(),
       day_of_week: date.getDay(),
+      user_id: user?.id, // Include user_id for authenticated users
     };
 
     console.log('Syncing to Supabase:', anonymousEntry);

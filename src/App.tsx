@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Info } from 'lucide-react';
+import { Plus, BarChart3, History, Info, LogOut } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import EntryHistory from './components/EntryHistory';
 import UrgeEntryForm from './components/UrgeEntryForm';
 import TermsOfService from './components/TermsOfService';
+import AuthPage from './components/AuthPage';
+import { useAuth } from './hooks/useAuth';
 import { UrgeEntry } from './types';
 import { getAllEntries } from './utils/db';
 import { calculateAnalytics } from './utils/analytics';
@@ -11,6 +13,7 @@ import { calculateAnalytics } from './utils/analytics';
 type Tab = 'dashboard' | 'history' | 'about' | 'terms';
 
 export default function App() {
+  const { user, loading: authLoading, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<UrgeEntry | undefined>();
@@ -45,7 +48,8 @@ export default function App() {
 
   const analytics = calculateAnalytics(entries);
 
-  if (loading) {
+  // Show loading spinner while checking auth
+  if (authLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -56,13 +60,42 @@ export default function App() {
     );
   }
 
+  // Show auth page if not logged in
+  if (!user) {
+    return <AuthPage onAuthSuccess={() => {}} />;
+  }
+
+  // Show data loading spinner
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Urge Tracker</h1>
-          <p className="text-sm text-gray-600">Understand your patterns, take control</p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Urge Tracker</h1>
+              <p className="text-sm text-gray-600">Understand your patterns, take control</p>
+            </div>
+            <button
+              onClick={signOut}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+              title="Sign out"
+            >
+              <LogOut size={20} />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
+          </div>
         </div>
       </header>
 
