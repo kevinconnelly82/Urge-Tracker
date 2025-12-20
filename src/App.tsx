@@ -5,6 +5,7 @@ import EntryHistory from './components/EntryHistory';
 import UrgeEntryForm from './components/UrgeEntryForm';
 import TermsOfService from './components/TermsOfService';
 import AuthPage from './components/AuthPage';
+import SplashScreen from './components/SplashScreen';
 import { useAuth } from './hooks/useAuth';
 import { UrgeEntry } from './types';
 import { getAllEntries } from './utils/db';
@@ -14,6 +15,7 @@ type Tab = 'dashboard' | 'history' | 'about' | 'terms';
 
 export default function App() {
   const { user, loading: authLoading, signOut } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<UrgeEntry | undefined>();
@@ -47,6 +49,11 @@ export default function App() {
   };
 
   const analytics = calculateAnalytics(entries);
+
+  // Show splash screen first
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+  }
 
   // Show loading spinner while checking auth
   if (authLoading) {
