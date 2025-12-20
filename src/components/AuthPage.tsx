@@ -185,17 +185,8 @@ export default function AuthPage({ onAuthSuccess }: Props) {
           </button>
         </form>
 
-        {/* Magic Link */}
-        <button
-          onClick={handleMagicLink}
-          disabled={loading || !email}
-          className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors disabled:opacity-50 mb-6"
-        >
-          Send Magic Link
-        </button>
-
         {/* Toggle Mode */}
-        <div className="text-center">
+        <div className="text-center mb-6">
           <button
             onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
             className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
