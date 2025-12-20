@@ -45,29 +45,6 @@ export default function AuthPage({ onAuthSuccess }: Props) {
     }
   };
 
-  const handleMagicLink = async () => {
-    if (!email) {
-      setError('Please enter your email address');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-    setMessage('');
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-      });
-      if (error) throw error;
-      setMessage('Check your email for the magic link!');
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSocialAuth = async (provider: 'google') => {
     setLoading(true);
     setError('');
