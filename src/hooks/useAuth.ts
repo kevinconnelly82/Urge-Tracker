@@ -28,9 +28,26 @@ export function useAuth() {
     await supabase.auth.signOut();
   };
 
+  const signInWithConsentKeys = () => {
+    const authorizeUrl = import.meta.env.VITE_CONSENT_KEYS_AUTHORIZE_URL;
+    const clientId = import.meta.env.VITE_CONSENT_KEYS_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_CONSENT_KEYS_REDIRECT_URI;
+    
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: 'code',
+      scope: 'openid email profile',
+    });
+
+    const authUrl = `${authorizeUrl}?${params.toString()}`;
+    window.location.href = authUrl;
+  };
+
   return {
     user,
     loading,
     signOut,
+    signInWithConsentKeys,
   };
 }
