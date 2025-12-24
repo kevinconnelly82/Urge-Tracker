@@ -9,11 +9,12 @@ import { useAuth } from '../hooks/useAuth';
 import { UrgeEntry } from '../types';
 import { getAllEntries } from '../utils/db';
 import { calculateAnalytics } from '../utils/analytics';
+import ProfileView from './ProfileView';
 
 type Tab = 'dashboard' | 'history' | 'about' | 'terms';
 
 export default function DashboardPage() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [showEntryForm, setShowEntryForm] = useState(false);
@@ -75,14 +76,7 @@ export default function DashboardPage() {
               <h1 className="text-2xl font-bold text-gray-900">Urge Tracker</h1>
               <p className="text-sm text-gray-600">Understand your patterns, take control</p>
             </div>
-            <button
-              onClick={handleSignOut}
-              className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
-              title="Sign out"
-            >
-              <LogOut size={20} />
-              <span className="hidden sm:inline">Sign Out</span>
-            </button>
+            {user && <ProfileView user={user} signOut={handleSignOut} />}
           </div>
         </div>
       </header>

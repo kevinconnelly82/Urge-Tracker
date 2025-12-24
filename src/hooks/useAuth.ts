@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '../utils/supabase';
+import { consentKeysConfig } from '../config/config';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -29,9 +30,12 @@ export function useAuth() {
   };
 
   const signInWithConsentKeys = () => {
-    const authorizeUrl = import.meta.env.VITE_CONSENT_KEYS_AUTHORIZE_URL;
-    const clientId = import.meta.env.VITE_CONSENT_KEYS_CLIENT_ID;
-    const redirectUri = import.meta.env.VITE_CONSENT_KEYS_REDIRECT_URI;
+    const { authorizeUrl, clientId, redirectUri } = consentKeysConfig;
+    
+    if (!authorizeUrl || !clientId) {
+      console.error('ConsentKeys not configured. Missing VITE_CONSENT_KEYS_AUTHORIZE_URL or VITE_CONSENT_KEYS_CLIENT_ID');
+      return;
+    }
     
     const params = new URLSearchParams({
       client_id: clientId,
