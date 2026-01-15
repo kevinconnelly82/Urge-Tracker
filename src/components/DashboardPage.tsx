@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Info, LogOut } from 'lucide-react';
+import { Plus, BarChart3, History, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
