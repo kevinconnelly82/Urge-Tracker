@@ -93,34 +93,11 @@ export default function DashboardPage() {
           />
         )}
         {activeTab === 'process' && (
-          <div className="bg-white rounded-lg shadow p-6 space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Urge Breath</h2>
-              <p className="text-gray-600">A guided breathing session to help you work through difficult moments and urges.</p>
-            </div>
-            
-            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-              <h3 className="font-semibold text-indigo-900 mb-2">Audio Session</h3>
-              <p className="text-sm text-indigo-800 mb-3">
-                Click the link below to access your guided breathing session:
-              </p>
-              <a 
-                href="https://drive.google.com/file/d/1l2lza0RmfCG3kVffYUAaJN8sU8nmofdg/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                🎧 Open Audio Session
-              </a>
-            </div>
-
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="font-semibold text-yellow-900 mb-2">Alternative: 4-7-8 Breathing</h3>
-              <p className="text-sm text-yellow-800">
-                While the audio loads, try this technique: Inhale for 4 counts, hold for 7 counts, exhale for 8 counts. Repeat 4 times.
-              </p>
-            </div>
-          </div>
+          <AudioPlayer 
+            audioSrc="https://www.dropbox.com/scl/fi/3e0i3v0vp4iysmg8wqj2n/breath-urge-guided.mp3?rlkey=mvp74cfsezi3q2gxwwhdfbpno&st=snx8inhu&dl=1"
+            title="Urge Breath"
+            description="A guided breathing session to help you work through difficult moments and urges."
+          />
         )}
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
         {activeTab === 'terms' && <TermsOfService />}
