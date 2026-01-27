@@ -94,7 +94,7 @@ export default function DashboardPage() {
         )}
         {activeTab === 'process' && (
           <AudioPlayer 
-            audioSrc="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
+            audioSrc="https://drive.google.com/uc?export=download&id=1l2lza0RmfCG3kVffYUAaJN8sU8nmofdg"
             title="Urge Breath"
             description="A guided breathing session to help you work through difficult moments and urges."
           />
