@@ -93,11 +93,61 @@ export default function DashboardPage() {
           />
         )}
         {activeTab === 'process' && (
-          <AudioPlayer 
-            audioSrc="https://www.dropbox.com/scl/fi/3e0i3v0vp4iysmg8wqj2n/breath-urge-guided.mp3?rlkey=mvp74cfsezi3q2gxwwhdfbpno&st=snx8inhu&dl=1"
-            title="Urge Breath"
-            description="A guided breathing session to help you work through difficult moments and urges."
-          />
+          <div className="bg-white rounded-lg shadow p-6 space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Urge Breath Session</h2>
+              <p className="text-gray-600">A guided breathing session to help you work through difficult moments and urges.</p>
+            </div>
+            
+            {/* Audio Player with Fallback */}
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+              <div className="text-center space-y-4">
+                <div className="bg-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.846 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.846l3.537-3.816a1 1 0 011.617.816zM16 8a2 2 0 11-4 0 2 2 0 014 0zM14 10.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                
+                <h3 className="font-semibold text-indigo-900">Listen to Your Guided Session</h3>
+                
+                <a 
+                  href="https://www.dropbox.com/scl/fi/3e0i3v0vp4iysmg8wqj2n/breath-urge-guided.mp3?rlkey=mvp74cfsezi3q2gxwwhdfbpno&st=snx8inhu&dl=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                >
+                  🎧 Play Audio Session
+                </a>
+                
+                <p className="text-sm text-indigo-700">
+                  Opens in a new tab for the best audio experience
+                </p>
+              </div>
+            </div>
+
+            {/* Breathing Exercise Alternative */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h3 className="font-semibold text-green-900 mb-3">Quick Breathing Exercise</h3>
+              <div className="space-y-2 text-sm text-green-800">
+                <p><strong>4-7-8 Technique:</strong></p>
+                <ol className="list-decimal list-inside space-y-1 ml-2">
+                  <li>Inhale quietly through your nose for 4 counts</li>
+                  <li>Hold your breath for 7 counts</li>
+                  <li>Exhale completely through your mouth for 8 counts</li>
+                  <li>Repeat this cycle 3-4 times</li>
+                </ol>
+                <p className="mt-2 italic">This technique can help calm your nervous system and reduce urge intensity.</p>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <h3 className="font-semibold text-yellow-900 mb-2">How to Use</h3>
+              <p className="text-sm text-yellow-800">
+                Find a quiet, comfortable space. Use headphones if possible. Follow along with the guided audio or practice the breathing technique above when you feel an urge coming on.
+              </p>
+            </div>
+          </div>
         )}
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
         {activeTab === 'terms' && <TermsOfService />}
