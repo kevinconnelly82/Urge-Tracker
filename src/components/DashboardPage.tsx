@@ -95,7 +95,7 @@ export default function DashboardPage() {
         )}
         {activeTab === 'process' && (
           <AudioPlayer 
-            audioSrc="/audio/breath urge (guided).mp3"
+            audioSrc="/audio/breath-urge-guided.mp3"
             title="Breath Urge (Guided)"
             description="A guided breathing session to help you work through difficult moments and urges."
           />

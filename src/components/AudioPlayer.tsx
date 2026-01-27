@@ -22,15 +22,27 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => setIsPlaying(false);
+    const handleError = (e: Event) => {
+      console.error('Audio error:', e);
+      console.error('Audio src:', audio.src);
+    };
+    const handleLoadStart = () => console.log('Audio load started');
+    const handleCanPlay = () => console.log('Audio can play');
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('loadstart', handleLoadStart);
+    audio.addEventListener('canplay', handleCanPlay);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('loadstart', handleLoadStart);
+      audio.removeEventListener('canplay', handleCanPlay);
     };
   }, []);
 
