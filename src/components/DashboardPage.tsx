@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Info } from 'lucide-react';
+import { Plus, BarChart3, History, Info, Headphones } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
@@ -11,7 +11,7 @@ import { getAllEntries } from '../utils/db';
 import { calculateAnalytics } from '../utils/analytics';
 import ProfileView from './ProfileView';
 
-type Tab = 'dashboard' | 'history' | 'about' | 'terms';
+type Tab = 'dashboard' | 'history' | 'process' | 'about' | 'terms';
 
 export default function DashboardPage() {
   const { signOut, user } = useAuth();
@@ -91,6 +91,21 @@ export default function DashboardPage() {
             onUpdate={loadEntries}
           />
         )}
+        {activeTab === 'process' && (
+          <div className="bg-white rounded-lg shadow p-6 space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Urge Breath</h2>
+              <p className="text-gray-600">A guided breathing session to help you work through difficult moments and urges.</p>
+            </div>
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+              <h3 className="font-semibold text-indigo-900 mb-2">Coming Soon</h3>
+              <p className="text-sm text-indigo-800">
+                Audio player functionality is being added. For now, try the 4-7-8 breathing technique: 
+                Inhale for 4 counts, hold for 7 counts, exhale for 8 counts.
+              </p>
+            </div>
+          </div>
+        )}
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
         {activeTab === 'terms' && <TermsOfService />}
       </main>
@@ -125,6 +140,15 @@ export default function DashboardPage() {
             >
               <History size={24} />
               <span className="text-xs mt-1">History</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('process')}
+              className={`flex flex-col items-center py-3 px-4 ${
+                activeTab === 'process' ? 'text-indigo-600' : 'text-gray-600'
+              }`}
+            >
+              <Headphones size={24} />
+              <span className="text-xs mt-1">Process</span>
             </button>
             <button
               onClick={() => setActiveTab('about')}
