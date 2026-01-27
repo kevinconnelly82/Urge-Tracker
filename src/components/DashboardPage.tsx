@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
 import UrgeEntryForm from './UrgeEntryForm';
 import TermsOfService from './TermsOfService';
+import AudioPlayer from './AudioPlayer';
 import { useAuth } from '../hooks/useAuth';
 import { UrgeEntry } from '../types';
 import { getAllEntries } from '../utils/db';
@@ -92,19 +93,11 @@ export default function DashboardPage() {
           />
         )}
         {activeTab === 'process' && (
-          <div className="bg-white rounded-lg shadow p-6 space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Urge Breath</h2>
-              <p className="text-gray-600">A guided breathing session to help you work through difficult moments and urges.</p>
-            </div>
-            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-              <h3 className="font-semibold text-indigo-900 mb-2">Coming Soon</h3>
-              <p className="text-sm text-indigo-800">
-                Audio player functionality is being added. For now, try the 4-7-8 breathing technique: 
-                Inhale for 4 counts, hold for 7 counts, exhale for 8 counts.
-              </p>
-            </div>
-          </div>
+          <AudioPlayer 
+            audioSrc="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
+            title="Urge Breath"
+            description="A guided breathing session to help you work through difficult moments and urges."
+          />
         )}
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
         {activeTab === 'terms' && <TermsOfService />}
