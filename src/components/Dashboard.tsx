@@ -219,8 +219,8 @@ function QuickStats({ analytics }: { analytics: AnalyticsData }) {
         <p className="text-3xl font-bold text-orange-600">{analytics.averageIntensity}/10</p>
       </div>
       <div className="bg-white rounded-lg shadow p-6">
-        <p className="text-sm text-gray-600 mb-1">Current Streak</p>
-        <p className="text-3xl font-bold text-green-600">{analytics.currentStreak} days</p>
+        <p className="text-sm text-gray-600 mb-1">Urges Processed</p>
+        <p className="text-3xl font-bold text-green-600">{analytics.urgesProcessed}</p>
       </div>
       <div className="bg-white rounded-lg shadow p-6">
         <p className="text-sm text-gray-600 mb-1">Success Rate</p>

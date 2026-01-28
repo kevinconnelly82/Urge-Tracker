@@ -51,6 +51,7 @@ export interface UrgeEntry {
 export interface AnalyticsData {
   totalEntries: number;
   currentStreak: number;
+  urgesProcessed: number;
   successRate: number;
   urgeTypeBreakdown: Record<UrgeType, number>;
   averageIntensity: number;

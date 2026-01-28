@@ -6,6 +6,7 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
     return {
       totalEntries: 0,
       currentStreak: 0,
+      urgesProcessed: 0,
       successRate: 0,
       urgeTypeBreakdown: {} as Record<UrgeType, number>,
       averageIntensity: 0,
@@ -81,6 +82,7 @@ export function calculateAnalytics(entries: UrgeEntry[]): AnalyticsData {
   return {
     totalEntries: entries.length,
     currentStreak,
+    urgesProcessed: processedCount,
     successRate: Math.round(successRate),
     urgeTypeBreakdown,
     averageIntensity: Math.round(averageIntensity * 10) / 10,
