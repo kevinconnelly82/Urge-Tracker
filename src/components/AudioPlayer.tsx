@@ -14,6 +14,7 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -25,6 +26,7 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
     const handleError = (e: Event) => {
       console.error('Audio error:', e);
       console.error('Audio src:', audio.src);
+      setHasError(true);
     };
     const handleLoadStart = () => console.log('Audio load started');
     const handleCanPlay = () => console.log('Audio can play');
@@ -99,6 +101,9 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
   };
 
   const formatTime = (time: number) => {
+    if (!time || !isFinite(time) || isNaN(time)) {
+      return '0:00';
+    }
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -113,68 +118,93 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
         )}
       </div>
 
-      <audio ref={audioRef} src={audioSrc} preload="metadata" />
+      <audio 
+        ref={audioRef} 
+        src={audioSrc} 
+        preload="metadata"
+        crossOrigin="anonymous"
+        onError={(e) => console.error('Audio loading error:', e)}
+        onLoadStart={() => console.log('Audio loading started')}
+        onCanPlay={() => console.log('Audio can play')}
+      />
 
-      {/* Main Controls */}
-      <div className="flex items-center justify-center space-x-4">
-        <button
-          onClick={restart}
-          className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-          title="Restart"
-        >
-          <RotateCcw size={20} />
-        </button>
-
-        <button
-          onClick={togglePlay}
-          className="p-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
-          title={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-        </button>
-
-        <button
-          onClick={toggleMute}
-          className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-          title={isMuted ? 'Unmute' : 'Mute'}
-        >
-          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        </button>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="space-y-2">
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-500 w-12">
-            {formatTime(currentTime)}
-          </span>
-          <input
-            type="range"
-            min="0"
-            max={duration || 0}
-            value={currentTime}
-            onChange={handleSeek}
-            className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-          />
-          <span className="text-sm text-gray-500 w-12">
-            {formatTime(duration)}
-          </span>
+      {hasError ? (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+          <h3 className="font-semibold text-yellow-900 mb-2">Audio Player Issue</h3>
+          <p className="text-sm text-yellow-800 mb-3">
+            The audio player is having trouble loading. Try refreshing the page or use the breathing technique below.
+          </p>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+            <h4 className="font-semibold text-green-900 mb-2">4-7-8 Breathing Technique</h4>
+            <p className="text-sm text-green-800">
+              Inhale for 4 counts, hold for 7 counts, exhale for 8 counts. Repeat 3-4 times.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Main Controls */}
+          <div className="flex items-center justify-center space-x-4">
+            <button
+              onClick={restart}
+              className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              title="Restart"
+            >
+              <RotateCcw size={20} />
+            </button>
 
-      {/* Volume Control */}
-      <div className="flex items-center justify-center space-x-3">
-        <Volume2 size={16} className="text-gray-400" />
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={isMuted ? 0 : volume}
-          onChange={handleVolumeChange}
-          className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-        />
-      </div>
+            <button
+              onClick={togglePlay}
+              className="p-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+              title={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+            </button>
+
+            <button
+              onClick={toggleMute}
+              className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              title={isMuted ? 'Unmute' : 'Mute'}
+            >
+              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </button>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="space-y-2">
+            <div className="flex items-center space-x-3">
+              <span className="text-sm text-gray-500 w-12">
+                {formatTime(currentTime)}
+              </span>
+              <input
+                type="range"
+                min="0"
+                max={duration && isFinite(duration) ? duration : 0}
+                value={currentTime && isFinite(currentTime) ? currentTime : 0}
+                onChange={handleSeek}
+                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <span className="text-sm text-gray-500 w-12">
+                {formatTime(duration)}
+              </span>
+            </div>
+          </div>
+
+          {/* Volume Control */}
+          <div className="flex items-center justify-center space-x-3">
+            <Volume2 size={16} className="text-gray-400" />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={isMuted ? 0 : volume}
+              onChange={handleVolumeChange}
+              className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            />
+          </div>
+        </>
+      )}
 
       {/* Instructions */}
       <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
