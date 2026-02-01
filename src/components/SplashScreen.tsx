@@ -20,13 +20,13 @@ export default function SplashScreen({ onComplete }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50 bg-white">
       {/* Mobile Splash Screen */}
-      <div className="md:hidden relative h-full">
+      <div className="md:hidden relative h-full flex items-center justify-center">
         <img 
           src={splashMobile} 
           alt="Urge Tracker" 
-          className="w-full h-full object-cover"
+          className="max-w-full max-h-full object-contain"
         />
         {/* Mobile clickable areas - adjust these coordinates based on your button positions */}
         <button
@@ -56,11 +56,11 @@ export default function SplashScreen({ onComplete }: Props) {
       </div>
       
       {/* Desktop Splash Screen */}
-      <div className="hidden md:block relative h-full">
+      <div className="hidden md:block relative h-full flex items-center justify-center">
         <img 
           src={splashDesktop} 
           alt="Urge Tracker" 
-          className="w-full h-full object-cover"
+          className="max-w-full max-h-full object-contain"
         />
         {/* Desktop clickable areas - adjust these coordinates based on your button positions */}
         <button
