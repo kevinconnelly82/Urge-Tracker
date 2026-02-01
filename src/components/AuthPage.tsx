@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '../utils/supabase';
 import { useAuth } from '../hooks/useAuth';
-import { Mail, Lock, User, Shield } from 'lucide-react';
+import { Mail, Lock, User } from 'lucide-react';
+import ckLogo from '../assets/ck-logo-trans.svg';
 
 interface Props {
   onAuthSuccess: () => void;
@@ -118,7 +119,7 @@ export default function AuthPage({ onAuthSuccess }: Props) {
             disabled={loading}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            <Shield className="w-5 h-5 text-blue-600" />
+            <img src={ckLogo} alt="ConsentKeys" className="w-6 h-6" />
             Continue with ConsentKeys
           </button>
         </div>
