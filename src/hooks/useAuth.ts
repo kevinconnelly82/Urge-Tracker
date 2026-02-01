@@ -36,12 +36,18 @@ export function useAuth() {
       console.error('ConsentKeys not configured. Missing VITE_CONSENT_KEYS_AUTHORIZE_URL or VITE_CONSENT_KEYS_CLIENT_ID');
       return;
     }
+
+    // Pass app origin in state so the edge function can redirect the magic link
+    // back to the correct environment (localhost vs production)
+    const appOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+    const state = encodeURIComponent(appOrigin);
     
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'openid email profile',
+      state,
     });
 
     const authUrl = `${authorizeUrl}?${params.toString()}`;
