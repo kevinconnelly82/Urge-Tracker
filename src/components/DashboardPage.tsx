@@ -6,7 +6,6 @@ import EntryHistory from './EntryHistory';
 import UrgeEntryForm from './UrgeEntryForm';
 import TermsOfService from './TermsOfService';
 import AudioPlayer from './AudioPlayer';
-import AudioPlayer from './AudioPlayer';
 import { useAuth } from '../hooks/useAuth';
 import { UrgeEntry } from '../types';
 import { getAllEntries } from '../utils/db';
