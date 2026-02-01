@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import splashDesktop from '../assets/splash-desktop.png';
-import splashMobile from '../assets/splash-mobile.png';
+import splashDesktop from '../assets/Splash-desktop.png';
+import splashMobile from '../assets/Splash-mobile.png';
 
 interface Props {
   onComplete: () => void;
