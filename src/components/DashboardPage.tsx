@@ -11,7 +11,6 @@ import { UrgeEntry } from '../types';
 import { getAllEntries } from '../utils/db';
 import { calculateAnalytics } from '../utils/analytics';
 import ProfileView from './ProfileView';
-import BodyMap from './BodyMap';
 
 type Tab = 'home' | 'log' | 'process' | 'patterns' | 'history' | 'about' | 'terms';
 
@@ -86,7 +85,7 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 pb-24">
         {activeTab === 'home' && <HomePage />}
-        {activeTab === 'log' && <Dashboard analytics={analytics} />}
+        {activeTab === 'log' && <LogPage onOpenForm={() => setShowEntryForm(true)} />}
         {activeTab === 'process' && (
           <AudioPlayer 
             audioSrc="/audio/breath-urge-guided.mp3"
@@ -94,7 +93,7 @@ export default function DashboardPage() {
             description="A guided breathing session to help you work through difficult moments and urges."
           />
         )}
-        {activeTab === 'patterns' && <BodyMap sensationMap={analytics.sensationLocationMap} />}
+        {activeTab === 'patterns' && <Dashboard analytics={analytics} />}
         {activeTab === 'history' && (
           <EntryHistory 
             entries={entries} 
@@ -179,6 +178,30 @@ export default function DashboardPage() {
           existingEntry={editingEntry}
         />
       )}
+    </div>
+  );
+}
+
+function LogPage({ onOpenForm }: { onOpenForm: () => void }) {
+  return (
+    <div className="bg-white rounded-lg shadow p-6 space-y-6">
+      <div className="text-center">
+        <div className="mx-auto w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+          <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-indigo-600 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Log Your Urge</h2>
+        <p className="text-gray-600 mb-6">Track your urges to understand patterns and take control</p>
+        <button
+          onClick={onOpenForm}
+          className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+        >
+          Start Logging
+        </button>
+      </div>
     </div>
   );
 }
