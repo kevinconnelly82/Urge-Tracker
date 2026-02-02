@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Headphones, Home, Pencil } from 'lucide-react';
+import { BarChart3, History, Headphones, Home, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
@@ -104,15 +104,6 @@ export default function DashboardPage() {
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
         {activeTab === 'terms' && <TermsOfService />}
       </main>
-
-      {/* Floating Action Button */}
-      <button
-        onClick={() => setShowEntryForm(true)}
-        className="fixed bottom-20 right-4 bg-indigo-600 text-white rounded-full p-4 shadow-lg hover:bg-indigo-700 transition-colors z-30"
-        title="Log new urge"
-      >
-        <Plus size={28} />
-      </button>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
