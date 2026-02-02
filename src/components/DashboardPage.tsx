@@ -74,8 +74,7 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Urge Tracker</h1>
-              <p className="text-sm text-gray-600">Understand your patterns, take control</p>
+              {/* Header content removed - now handled per page */}
             </div>
             {user && <ProfileView user={user} signOut={handleSignOut} />}
           </div>
@@ -199,10 +198,78 @@ function LogPage({ onOpenForm }: { onOpenForm: () => void }) {
 
 function HomePage() {
   return (
-    <div className="bg-white rounded-lg shadow p-6 space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900">Welcome to Urge Tracker</h2>
-      <div className="text-gray-600">
-        <p>This is your home page. Content will be added here later.</p>
+    <div className="space-y-8">
+      {/* Hero Section */}
+      <div className="text-center space-y-6 py-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          Notice your urges.<br />
+          Process them.<br />
+          Learn your patterns.<br />
+          Respond with choice.
+        </h1>
+      </div>
+
+      {/* Steps Section */}
+      <div className="space-y-8">
+        {/* Step 1 */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+                1
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Process the urge</h3>
+              <p className="text-gray-700">Use the guided breath track whenever an urge hits</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 2 */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+                2
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Record what happened</h3>
+              <p className="text-gray-700">Capture what you felt, where you were, and if you were able to process the urge or if you gave into it</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 3 */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+                3
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Observe your patterns</h3>
+              <p className="text-gray-700">Over time, the data shows when and why urges repeat</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 4 */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+                4
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Respond with choice</h3>
+              <p className="text-gray-700">Now you have space to make a different decision.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
