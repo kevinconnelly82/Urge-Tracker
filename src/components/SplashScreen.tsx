@@ -15,29 +15,31 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-full object-cover"
         />
-        {/* Invisible buttons positioned over your design buttons */}
+        {/* Visible buttons for positioning - will make invisible once positioned correctly */}
         <button
           onClick={onComplete}
-          className="absolute bg-transparent border-0 cursor-pointer"
+          className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
-            bottom: '8%',   // Higher up to avoid being cut off
-            left: '15%',    
+            bottom: '5%',   // Very close to bottom
+            left: '10%',    
+            width: '35%',   
+            height: '8%',   
+          }}
+        >
+          GET STARTED
+        </button>
+        <button
+          onClick={onComplete}
+          className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
+          style={{
+            bottom: '5%',   // Same level as Get Started
+            right: '10%',   
             width: '30%',   
-            height: '6%',   
+            height: '8%',   
           }}
-          aria-label="Get Started"
-        />
-        <button
-          onClick={onComplete}
-          className="absolute bg-transparent border-0 cursor-pointer"
-          style={{
-            bottom: '8%',   // Same level as Get Started
-            right: '15%',   
-            width: '25%',   
-            height: '6%',   
-          }}
-          aria-label="Log In"
-        />
+        >
+          LOG IN
+        </button>
       </div>
 
       {/* Desktop View */}
@@ -47,31 +49,33 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-full object-cover"
         />
-        {/* Invisible buttons positioned exactly over your design buttons */}
+        {/* Visible buttons for positioning - will make invisible once positioned correctly */}
         {/* Get Started button - positioned over your blue button */}
         <button
           onClick={onComplete}
-          className="absolute bg-transparent border-0 cursor-pointer"
+          className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
             top: '52%',     // Positioned over your blue "Get Started" button
             left: '6%',     
             width: '12%',   
             height: '7%',   
           }}
-          aria-label="Get Started"
-        />
+        >
+          GET STARTED
+        </button>
         {/* Log In button - positioned over your "Log In" text */}
         <button
           onClick={onComplete}
-          className="absolute bg-transparent border-0 cursor-pointer"
+          className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
             top: '61%',     // Positioned over your "Log In" text
             left: '6%',     
             width: '8%',    
             height: '4%',   
           }}
-          aria-label="Log In"
-        />
+        >
+          LOG IN
+        </button>
       </div>
     </div>
   );
