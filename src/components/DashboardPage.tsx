@@ -111,8 +111,9 @@ export default function DashboardPage() {
             <button
               onClick={() => setActiveTab('home')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'home' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'home' ? 'text-gray-600' : 'text-gray-600'
               }`}
+              style={activeTab === 'home' ? { color: '#3a577e' } : {}}
             >
               <Home size={24} />
               <span className="text-xs mt-1">Home</span>
@@ -120,8 +121,9 @@ export default function DashboardPage() {
             <button
               onClick={() => setActiveTab('log')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'log' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'log' ? 'text-gray-600' : 'text-gray-600'
               }`}
+              style={activeTab === 'log' ? { color: '#3a577e' } : {}}
             >
               <Pencil size={24} />
               <span className="text-xs mt-1">Log</span>
@@ -129,8 +131,9 @@ export default function DashboardPage() {
             <button
               onClick={() => setActiveTab('process')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'process' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'process' ? 'text-gray-600' : 'text-gray-600'
               }`}
+              style={activeTab === 'process' ? { color: '#3a577e' } : {}}
             >
               <Headphones size={24} strokeWidth={3} />
               <span className="text-xs mt-1 font-bold">Process</span>
@@ -138,8 +141,9 @@ export default function DashboardPage() {
             <button
               onClick={() => setActiveTab('patterns')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'patterns' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'patterns' ? 'text-gray-600' : 'text-gray-600'
               }`}
+              style={activeTab === 'patterns' ? { color: '#3a577e' } : {}}
             >
               <BarChart3 size={24} />
               <span className="text-xs mt-1">Patterns</span>
@@ -147,8 +151,9 @@ export default function DashboardPage() {
             <button
               onClick={() => setActiveTab('history')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'history' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'history' ? 'text-gray-600' : 'text-gray-600'
               }`}
+              style={activeTab === 'history' ? { color: '#3a577e' } : {}}
             >
               <History size={24} />
               <span className="text-xs mt-1">History</span>
@@ -212,10 +217,10 @@ function HomePage() {
       {/* Steps Section */}
       <div className="space-y-8">
         {/* Step 1 */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4" style={{ borderLeftColor: '#3a577e' }}>
           <div className="flex items-start space-x-4">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+              <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#3a577e' }}>
                 1
               </div>
             </div>
@@ -227,10 +232,10 @@ function HomePage() {
         </div>
 
         {/* Step 2 */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4" style={{ borderLeftColor: '#3a577e' }}>
           <div className="flex items-start space-x-4">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+              <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#3a577e' }}>
                 2
               </div>
             </div>
@@ -242,10 +247,10 @@ function HomePage() {
         </div>
 
         {/* Step 3 */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4" style={{ borderLeftColor: '#3a577e' }}>
           <div className="flex items-start space-x-4">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+              <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#3a577e' }}>
                 3
               </div>
             </div>
@@ -257,10 +262,10 @@ function HomePage() {
         </div>
 
         {/* Step 4 */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-600">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4" style={{ borderLeftColor: '#3a577e' }}>
           <div className="flex items-start space-x-4">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+              <div className="w-8 h-8 text-white rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#3a577e' }}>
                 4
               </div>
             </div>
