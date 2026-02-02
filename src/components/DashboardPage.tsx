@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Info, Headphones, Home } from 'lucide-react';
+import { Plus, BarChart3, History, Headphones, Home, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
@@ -133,7 +133,7 @@ export default function DashboardPage() {
                 activeTab === 'log' ? 'text-indigo-600' : 'text-gray-600'
               }`}
             >
-              <BarChart3 size={24} />
+              <Pencil size={24} />
               <span className="text-xs mt-1">Log</span>
             </button>
             <button
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                 activeTab === 'patterns' ? 'text-indigo-600' : 'text-gray-600'
               }`}
             >
-              <Info size={24} />
+              <BarChart3 size={24} />
               <span className="text-xs mt-1">Patterns</span>
             </button>
             <button
