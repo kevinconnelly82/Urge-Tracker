@@ -20,7 +20,7 @@ export default function SplashScreen({ onComplete }: Props) {
           onClick={onComplete}
           className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
-            bottom: '15%',  // Move up from bottom since image now fits fully
+            bottom: '25%',  // Move higher up on the image
             left: '10%',    
             width: '35%',   
             height: '8%',   
@@ -32,7 +32,7 @@ export default function SplashScreen({ onComplete }: Props) {
           onClick={onComplete}
           className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
-            bottom: '15%',  // Same level as Get Started
+            bottom: '25%',  // Same level as Get Started
             right: '10%',   
             width: '30%',   
             height: '8%',   
@@ -55,8 +55,8 @@ export default function SplashScreen({ onComplete }: Props) {
           onClick={onComplete}
           className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
-            top: '57%',     // Down 5% from 52%
-            left: '6%',     
+            top: '62%',     // Down another 5% from 57%
+            left: '8%',     // Right 2% from 6%
             width: '12%',   
             height: '7%',   
           }}
@@ -68,8 +68,8 @@ export default function SplashScreen({ onComplete }: Props) {
           onClick={onComplete}
           className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
           style={{
-            top: '63%',     // Down 2% from 61%
-            left: '11%',    // Right 5% from 6%
+            top: '65%',     // Down 2% from 63%
+            left: '16%',    // Right 5% from 11%
             width: '8%',    
             height: '4%',   
           }}
