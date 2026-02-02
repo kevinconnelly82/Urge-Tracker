@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, BarChart3, History, Info, Headphones } from 'lucide-react';
+import { Plus, BarChart3, History, Info, Headphones, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import EntryHistory from './EntryHistory';
@@ -11,13 +11,14 @@ import { UrgeEntry } from '../types';
 import { getAllEntries } from '../utils/db';
 import { calculateAnalytics } from '../utils/analytics';
 import ProfileView from './ProfileView';
+import BodyMap from './BodyMap';
 
-type Tab = 'dashboard' | 'history' | 'process' | 'about' | 'terms';
+type Tab = 'home' | 'log' | 'process' | 'patterns' | 'history' | 'about' | 'terms';
 
 export default function DashboardPage() {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [activeTab, setActiveTab] = useState<Tab>('log');
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<UrgeEntry | undefined>();
   const [entries, setEntries] = useState<UrgeEntry[]>([]);
@@ -84,19 +85,21 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 pb-24">
-        {activeTab === 'dashboard' && <Dashboard analytics={analytics} />}
-        {activeTab === 'history' && (
-          <EntryHistory 
-            entries={entries} 
-            onEdit={handleEdit}
-            onUpdate={loadEntries}
-          />
-        )}
+        {activeTab === 'home' && <HomePage />}
+        {activeTab === 'log' && <Dashboard analytics={analytics} />}
         {activeTab === 'process' && (
           <AudioPlayer 
             audioSrc="/audio/breath-urge-guided.mp3"
             title="Breath Urge (Guided)"
             description="A guided breathing session to help you work through difficult moments and urges."
+          />
+        )}
+        {activeTab === 'patterns' && <BodyMap sensationMap={analytics.sensationLocationMap} />}
+        {activeTab === 'history' && (
+          <EntryHistory 
+            entries={entries} 
+            onEdit={handleEdit}
+            onUpdate={loadEntries}
           />
         )}
         {activeTab === 'about' && <AboutPage onNavigateToTerms={() => setActiveTab('terms')} />}
@@ -117,13 +120,40 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex justify-around">
             <button
-              onClick={() => setActiveTab('dashboard')}
+              onClick={() => setActiveTab('home')}
               className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'dashboard' ? 'text-indigo-600' : 'text-gray-600'
+                activeTab === 'home' ? 'text-indigo-600' : 'text-gray-600'
+              }`}
+            >
+              <Home size={24} />
+              <span className="text-xs mt-1">Home</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('log')}
+              className={`flex flex-col items-center py-3 px-4 ${
+                activeTab === 'log' ? 'text-indigo-600' : 'text-gray-600'
               }`}
             >
               <BarChart3 size={24} />
-              <span className="text-xs mt-1">Stats</span>
+              <span className="text-xs mt-1">Log</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('process')}
+              className={`flex flex-col items-center py-3 px-4 ${
+                activeTab === 'process' ? 'text-indigo-600' : 'text-gray-600'
+              }`}
+            >
+              <Headphones size={24} strokeWidth={3} />
+              <span className="text-xs mt-1 font-bold">Process</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('patterns')}
+              className={`flex flex-col items-center py-3 px-4 ${
+                activeTab === 'patterns' ? 'text-indigo-600' : 'text-gray-600'
+              }`}
+            >
+              <Info size={24} />
+              <span className="text-xs mt-1">Patterns</span>
             </button>
             <button
               onClick={() => setActiveTab('history')}
@@ -133,24 +163,6 @@ export default function DashboardPage() {
             >
               <History size={24} />
               <span className="text-xs mt-1">History</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('process')}
-              className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'process' ? 'text-indigo-600' : 'text-gray-600'
-              }`}
-            >
-              <Headphones size={24} />
-              <span className="text-xs mt-1">Process</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('about')}
-              className={`flex flex-col items-center py-3 px-4 ${
-                activeTab === 'about' ? 'text-indigo-600' : 'text-gray-600'
-              }`}
-            >
-              <Info size={24} />
-              <span className="text-xs mt-1">About</span>
             </button>
           </div>
         </div>
@@ -167,6 +179,17 @@ export default function DashboardPage() {
           existingEntry={editingEntry}
         />
       )}
+    </div>
+  );
+}
+
+function HomePage() {
+  return (
+    <div className="bg-white rounded-lg shadow p-6 space-y-4">
+      <h2 className="text-2xl font-bold text-gray-900">Welcome to Urge Tracker</h2>
+      <div className="text-gray-600">
+        <p>This is your home page. Content will be added here later.</p>
+      </div>
     </div>
   );
 }
