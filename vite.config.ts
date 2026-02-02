@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'Urge Tracker',
         short_name: 'Urge Tracker',
         description: 'Track and understand your urge patterns',
-        theme_color: '#6366f1',
+        theme_color: '#3a577e',
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
