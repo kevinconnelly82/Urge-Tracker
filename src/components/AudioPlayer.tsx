@@ -155,10 +155,13 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
 
             <button
               onClick={togglePlay}
-              className="p-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+              className="p-4 rounded-full text-white transition-colors"
+              style={{ backgroundColor: '#3a577e' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2d4460'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3a577e'}
               title={isPlaying ? 'Pause' : 'Play'}
             >
-              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+              {isPlaying ? <Pause size={24} strokeWidth={3} /> : <Play size={24} strokeWidth={3} />}
             </button>
 
             <button
@@ -207,9 +210,9 @@ export default function AudioPlayer({ audioSrc, title, description }: Props) {
       )}
 
       {/* Instructions */}
-      <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-        <h3 className="font-semibold text-indigo-900 mb-2">How to Use</h3>
-        <p className="text-sm text-indigo-800">
+      <div className="border rounded-lg p-4" style={{ backgroundColor: '#f0f4f8', borderColor: '#b8cde0' }}>
+        <h3 className="font-semibold mb-2" style={{ color: '#2d4460' }}>How to Use</h3>
+        <p className="text-sm" style={{ color: '#3a577e' }}>
           Find a quiet, comfortable space. Press play and follow along with the guided audio. 
           This can help you process and work through difficult moments.
         </p>
