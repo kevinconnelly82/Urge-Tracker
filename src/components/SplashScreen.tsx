@@ -15,20 +15,29 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute bottom-8 left-4 right-4 flex justify-between">
-          <button
-            onClick={onComplete}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold"
-          >
-            Get Started
-          </button>
-          <button
-            onClick={onComplete}
-            className="text-blue-600 px-4 py-3 font-semibold underline"
-          >
-            Log In
-          </button>
-        </div>
+        {/* Invisible buttons positioned over your design buttons */}
+        <button
+          onClick={onComplete}
+          className="absolute bg-transparent border-0 cursor-pointer"
+          style={{
+            bottom: '8%',   // Higher up to avoid being cut off
+            left: '15%',    
+            width: '30%',   
+            height: '6%',   
+          }}
+          aria-label="Get Started"
+        />
+        <button
+          onClick={onComplete}
+          className="absolute bg-transparent border-0 cursor-pointer"
+          style={{
+            bottom: '8%',   // Same level as Get Started
+            right: '15%',   
+            width: '25%',   
+            height: '6%',   
+          }}
+          aria-label="Log In"
+        />
       </div>
 
       {/* Desktop View */}
@@ -38,20 +47,31 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute left-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4">
-          <button
-            onClick={onComplete}
-            className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg"
-          >
-            Get Started
-          </button>
-          <button
-            onClick={onComplete}
-            className="text-blue-600 px-4 py-2 font-semibold underline"
-          >
-            Log In
-          </button>
-        </div>
+        {/* Invisible buttons positioned exactly over your design buttons */}
+        {/* Get Started button - positioned over your blue button */}
+        <button
+          onClick={onComplete}
+          className="absolute bg-transparent border-0 cursor-pointer"
+          style={{
+            top: '52%',     // Positioned over your blue "Get Started" button
+            left: '6%',     
+            width: '12%',   
+            height: '7%',   
+          }}
+          aria-label="Get Started"
+        />
+        {/* Log In button - positioned over your "Log In" text */}
+        <button
+          onClick={onComplete}
+          className="absolute bg-transparent border-0 cursor-pointer"
+          style={{
+            top: '61%',     // Positioned over your "Log In" text
+            left: '6%',     
+            width: '8%',    
+            height: '4%',   
+          }}
+          aria-label="Log In"
+        />
       </div>
     </div>
   );
