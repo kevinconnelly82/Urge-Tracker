@@ -59,12 +59,13 @@ export default function ProfileView({ user, signOut }: ProfileViewProps) {
       {/* Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style={{ '--tw-ring-color': '#3a577e' } as any}
         aria-label="Profile menu"
         aria-expanded={isOpen}
       >
         {/* Avatar */}
-        <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-medium">
+        <div className="w-8 h-8 rounded-full text-white flex items-center justify-center text-sm font-medium" style={{ backgroundColor: '#3a577e' }}>
           {initials}
         </div>
         

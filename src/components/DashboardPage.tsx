@@ -60,7 +60,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderBottomColor: '#3a577e' }}></div>
           <p className="mt-4 text-gray-600">Loading your data...</p>
         </div>
       </div>
@@ -181,10 +181,10 @@ function LogPage({ onOpenForm }: { onOpenForm: () => void }) {
   return (
     <div className="bg-white rounded-lg shadow p-6 space-y-6">
       <div className="text-center">
-        <div className="mx-auto w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-          <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
+        <div className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#e8f0f7' }}>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3a577e' }}>
             <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-indigo-600 rounded-full"></div>
+              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#3a577e' }}></div>
             </div>
           </div>
         </div>
@@ -192,7 +192,10 @@ function LogPage({ onOpenForm }: { onOpenForm: () => void }) {
         <p className="text-gray-600 mb-6">Track your urges to understand patterns and take control</p>
         <button
           onClick={onOpenForm}
-          className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+          className="text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+          style={{ backgroundColor: '#3a577e' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2d4460'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3a577e'}
         >
           Start Logging
         </button>
