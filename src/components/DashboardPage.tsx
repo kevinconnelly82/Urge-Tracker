@@ -17,7 +17,7 @@ type Tab = 'home' | 'log' | 'process' | 'patterns' | 'history' | 'about' | 'term
 export default function DashboardPage() {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<Tab>('log');
+  const [activeTab, setActiveTab] = useState<Tab>('home');
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<UrgeEntry | undefined>();
   const [entries, setEntries] = useState<UrgeEntry[]>([]);
