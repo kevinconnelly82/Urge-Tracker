@@ -15,31 +15,29 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-auto"
         />
-        {/* Visible buttons for positioning - will make invisible once positioned correctly */}
+        {/* Invisible clickable buttons positioned over your design buttons */}
         <button
           onClick={onComplete}
-          className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
+          className="absolute bg-transparent border-0 cursor-pointer"
           style={{
-            bottom: '5%',   // Back to bottom since we can now scroll
+            bottom: '5%',   
             left: '10%',    
             width: '35%',   
             height: '8%',   
           }}
-        >
-          GET STARTED
-        </button>
+          aria-label="Get Started"
+        />
         <button
           onClick={onComplete}
-          className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
+          className="absolute bg-transparent border-0 cursor-pointer"
           style={{
-            bottom: '5%',   // Same level as Get Started
+            bottom: '5%',   
             right: '10%',   
             width: '30%',   
             height: '8%',   
           }}
-        >
-          LOG IN
-        </button>
+          aria-label="Log In"
+        />
       </div>
 
       {/* Desktop View */}
@@ -49,33 +47,31 @@ export default function SplashScreen({ onComplete }: Props) {
           alt="Urge Tracker" 
           className="w-full h-full object-cover"
         />
-        {/* Visible buttons for positioning - will make invisible once positioned correctly */}
+        {/* Invisible clickable buttons positioned over your design buttons */}
         {/* Get Started button - positioned over your blue button */}
         <button
           onClick={onComplete}
-          className="absolute bg-red-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
+          className="absolute bg-transparent border-0 cursor-pointer"
           style={{
-            top: '64%',     // Down 2% more from 62%
-            left: '8%',     // Keep same position
+            top: '64%',     
+            left: '8%',     
             width: '12%',   
             height: '7%',   
           }}
-        >
-          GET STARTED
-        </button>
+          aria-label="Get Started"
+        />
         {/* Log In button - positioned over your "Log In" text */}
         <button
           onClick={onComplete}
-          className="absolute bg-blue-500 border-2 border-yellow-400 cursor-pointer text-white font-bold"
+          className="absolute bg-transparent border-0 cursor-pointer"
           style={{
-            top: '66%',     // Down 1% from 65%
-            left: '19%',    // Right 3% from 16%
+            top: '66%',     
+            left: '19%',    
             width: '8%',    
             height: '4%',   
           }}
-        >
-          LOG IN
-        </button>
+          aria-label="Log In"
+        />
       </div>
     </div>
   );
